@@ -128,6 +128,14 @@ union expat_align {
 
 typedef unsigned long long XmlBigCount;
 
+// Windows does not have `ssize_t` and `SSIZE_MAX` is not guaranted by C99
+#  if defined(_WIN32)
+typedef ptrdiff_t ssize_t;
+#    define SSIZE_MAX PTRDIFF_MAX
+#  elif ! defined(SSIZE_MAX)
+#    define SSIZE_MAX (SIZE_MAX / 2)
+#  endif
+
 void _INTERNAL_trim_to_complete_utf8_characters(const char *from,
                                                 const char **fromLimRef);
 
